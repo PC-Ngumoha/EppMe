@@ -1,0 +1,13 @@
+### Get all posts
+GET http://127.0.0.1:8000/posts/
+
+### Create a new post
+POST http://127.0.0.1:8000/posts/
+Content-Type: application/json
+
+{
+  "id": 2,
+  "author_name": "Chukwuemeka",
+  "type": "need",
+  "message": "Please, I need assistance"
+}
