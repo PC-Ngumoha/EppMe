@@ -93,3 +93,14 @@ async def edit_post(post_id: UUID, post: PostUpdate, session: SessionDep) -> Pos
     session.commit()
     session.refresh(db_post)
     return db_post
+
+
+@app.delete('/posts/{post_id}')
+async def delete_post(post_id: UUID, session: SessionDep):
+    post = session.exec(select(Post).where(Post.id == post_id)).first()
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+    session.delete(post)
+    session.commit()
+    return {"ok": True}

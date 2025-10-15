@@ -6,9 +6,9 @@ POST http://127.0.0.1:8000/posts/
 Content-Type: application/json
 
 {
-  "author_name": "Alfred",
+  "author_name": "Lima",
   "type": "offer",
-  "message": "I can take you there, but I move by 8:00am"
+  "message": "I hate you all on this stupid app"
 }
 
 ### Edit a post
@@ -18,3 +18,6 @@ Content-Type: application/json
 {
   "message": "Please, I need a ride to maitama by 9:00am"
 }
+
+### Delete a post
+DELETE http://127.0.0.1:8000/posts/d37210fe-bd93-4564-af17-e6239c873692
