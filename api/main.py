@@ -21,6 +21,13 @@ class PostCreate(PostBase):
     pass
 
 
+# Update Model
+class PostUpdate(PostBase):
+    type: str | None = None
+    author_name: str | None = None
+    message: str | None = None
+
+
 # main Model
 class Post(PostBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
@@ -67,6 +74,21 @@ async def get_posts(session: SessionDep) -> list[Post]:
 async def create_post(post: PostCreate, session: SessionDep) -> Post:
     """Create a new post"""
     db_post = Post(**post.model_dump())
+    session.add(db_post)
+    session.commit()
+    session.refresh(db_post)
+    return db_post
+
+
+@app.patch('/posts/{post_id}')
+async def edit_post(post_id: UUID, post: PostUpdate, session: SessionDep) -> Post:
+    """Edit specific post in DB"""
+    db_post = session.exec(select(Post).where(Post.id == post_id)).first()
+    if not db_post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+    post_data = post.model_dump(exclude_unset=True)
+    db_post.sqlmodel_update(post_data)
     session.add(db_post)
     session.commit()
     session.refresh(db_post)
