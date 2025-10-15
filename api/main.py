@@ -1,29 +1,29 @@
-# if __name__ == "__main__":
-#     main()
 """
-A post should have the following fields
-
-- id
-- type: "offer" or "need"
-- message
-- timestamp
-- author_name
-
+main entry point.
 """
-
 # from enum import Enum
 from typing import Annotated
 from datetime import datetime
-from fastapi import FastAPI, Depends, Query, HTTPException
+from fastapi import FastAPI, Depends, Query, HTTPException, status
 from sqlmodel import Field, Session, create_engine, select, SQLModel
+from uuid import uuid4, UUID
 
 
-# DB setup & other config
-class Post(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+# Base Model
+class PostBase(SQLModel):
     type: str = Field(index=True)
     author_name: str = Field(index=True)
     message: str
+
+
+# Create Model
+class PostCreate(PostBase):
+    pass
+
+
+# main Model
+class Post(PostBase, table=True):
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
     timestamp: datetime = Field(default_factory=datetime.now)
 
 
@@ -50,7 +50,7 @@ app = FastAPI()
 
 
 # Create database tables on app startup
-# FIXME: use migration script for this in production environment
+# FIXME: use migration script (e.g Alembic) for this in production environment
 @app.on_event('startup')
 def on_startup():
     create_database_and_tables()
@@ -63,10 +63,11 @@ async def get_posts(session: SessionDep) -> list[Post]:
     return posts
 
 
-@app.post('/posts/')
-async def create_post(post: Post, session: SessionDep) -> Post:
+@app.post('/posts/', status_code=status.HTTP_201_CREATED)
+async def create_post(post: PostCreate, session: SessionDep) -> Post:
     """Create a new post"""
-    session.add(post)
+    db_post = Post(**post.model_dump())
+    session.add(db_post)
     session.commit()
-    session.refresh(post)
-    return post
+    session.refresh(db_post)
+    return db_post

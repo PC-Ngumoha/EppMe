@@ -6,8 +6,7 @@ POST http://127.0.0.1:8000/posts/
 Content-Type: application/json
 
 {
-  "id": 2,
-  "author_name": "Chukwuemeka",
-  "type": "need",
-  "message": "Please, I need assistance"
+  "author_name": "Alfred",
+  "type": "offer",
+  "message": "I can take you there, but I move by 8:00am"
 }
