@@ -6,6 +6,8 @@
 :root {
   --text: #333333;
   --soft-green: #4CAF50;
+  --soft-green-dark: #43A047;
+  --bright-green: #80E27E;
   --warm-orange: #FF9800;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -47,6 +49,8 @@
 @theme inline {
   --color-text: var(--text);
   --color-soft-green: var(--soft-green);
+  --color-soft-green-dark: var(--soft-green-dark);
+  --color-bright-green: var(--bright-green);
   --color-warm-orange: var(--warm-orange);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

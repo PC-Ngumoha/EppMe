@@ -4,6 +4,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const borel = Borel({
   subsets: ['latin'],
@@ -33,13 +34,15 @@ export default function HomePage(): JSX.Element {
           <ToggleGroup type="single">
             <ToggleGroupItem
               value="need"
-              className="font-bold data-[state=on]:bg-soft-green data-[state=on]:text-white"
+              className="font-bold data-[state=on]:bg-soft-green data-[state=on]:text-white
+              hover:bg-green-200 transition-colors ease-in-out"
             >
               Need
             </ToggleGroupItem>
             <ToggleGroupItem
               value="offer"
-              className="font-bold data-[state=on]:bg-soft-green data-[state=on]:text-white"
+              className="font-bold data-[state=on]:bg-soft-green data-[state=on]:text-white
+              hover:bg-green-200 transition-colors ease-in-out"
             >
               Offer
             </ToggleGroupItem>
@@ -59,8 +62,8 @@ export default function HomePage(): JSX.Element {
           />
           <Button
             type="submit"
-            className="my-2 bg-soft-green font-bold tracking-wider hover:bg-soft-green text-lg text-white
-            font-sans"
+            className="my-2 py-6 bg-soft-green font-bold tracking-wider hover:bg-soft-green-dark
+            text-md text-white font-sans transition-colors ease-in-out duration-200"
           >
             Post
           </Button>
