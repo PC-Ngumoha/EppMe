@@ -31,7 +31,9 @@ export default function PostCard({ post }: { post: IPost }): JSX.Element {
         {post.message}
       </CardContent>
       <CardFooter>
-        <span>{dayjs(post.timestamp).fromNow()}</span>
+        <span className="text-gray-400 tracking-wide text-sm">
+          {dayjs(post.timestamp).fromNow()}
+        </span>
       </CardFooter>
     </Card>
   );
