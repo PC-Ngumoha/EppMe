@@ -69,6 +69,42 @@ export default function HomePage(): JSX.Element {
           </Button>
         </div>
       </form>
+
+      {/* All posts made */}
+      <Tabs defaultValue="all" className="mx-auto mt-4 w-[50%]">
+        <TabsList className="w-[30%] mx-auto bg-transparent">
+          <TabsTrigger
+            value="all"
+            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+            hover:bg-green-200 mx-1"
+          >
+            All
+          </TabsTrigger>
+          <TabsTrigger
+            value="needs"
+            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+            hover:bg-green-200 mx-1"
+          >
+            Needs
+          </TabsTrigger>
+          <TabsTrigger
+            value="offers"
+            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+            hover:bg-green-200 mx-1"
+          >
+            Offers
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="all">
+          All Content posted will appear here
+        </TabsContent>
+        <TabsContent value="needs">
+          All Needs posted will appear here
+        </TabsContent>
+        <TabsContent value="offers">
+          All Offers posted will appear here
+        </TabsContent>
+      </Tabs>
     </main>
   );
 }
