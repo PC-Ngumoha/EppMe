@@ -5,25 +5,23 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
+// import {
+//   Card,
+//   CardHeader,
+//   CardContent,
+//   CardFooter,
+// } from '@/components/ui/card';
+// import { Badge } from '@/components/ui/badge';
+
+import PostCard from '@/components/custom/post_card';
+
+// import dayjs from '@/lib/dayjs';
+import type { IPost } from '@/lib/types';
 
 const borel = Borel({
   subsets: ['latin'],
   weight: '400',
 });
-
-interface IPost {
-  id: string;
-  type: 'need' | 'offer';
-  message: string;
-  timestamp: string;
-  author_name: string;
-}
 
 export const fakePosts: IPost[] = [
   {
@@ -160,17 +158,30 @@ export default function HomePage(): JSX.Element {
         </TabsList>
         <TabsContent value="all">
           {fakePosts.map(post => (
-            <Card key={post.id} className="my-3 rounded-sm border-gray-50">
-              <CardHeader>
-                <span>Card&apos;s header</span>
-              </CardHeader>
-              <CardContent>
-                <span>Card&apos;s content</span>
-              </CardContent>
-              <CardFooter>
-                <span>Card&apos;s footer</span>
-              </CardFooter>
-            </Card>
+            // <Card key={post.id} className="my-3 rounded-sm border-gray-50">
+            //   <CardHeader className="flex justify-start items-center">
+            //     <Badge
+            //       variant="default"
+            //       className={
+            //         post.type === 'need'
+            //           ? 'bg-soft-green text-white capitalize'
+            //           : 'bg-warm-orange text-white capitalize'
+            //       }
+            //     >
+            //       {post.type}
+            //     </Badge>
+            //     <h3 className="mx-1 font-bold font-sans tracking-wide">
+            //       {post.author_name}
+            //     </h3>
+            //   </CardHeader>
+            //   <CardContent className="tracking-wider leading-2 font-sans">
+            //     {post.message}
+            //   </CardContent>
+            //   <CardFooter>
+            //     <span>{dayjs(post.timestamp).fromNow()}</span>
+            //   </CardFooter>
+            // </Card>
+            <PostCard key={post.id} post={post} />
           ))}
         </TabsContent>
         <TabsContent value="needs">
