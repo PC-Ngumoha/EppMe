@@ -5,11 +5,74 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 
 const borel = Borel({
   subsets: ['latin'],
   weight: '400',
 });
+
+interface IPost {
+  id: string;
+  type: 'need' | 'offer';
+  message: string;
+  timestamp: string;
+  author_name: string;
+}
+
+export const fakePosts: IPost[] = [
+  {
+    id: 'd0e1f9b8-4b6a-44ab-97ce-2f91f59fcb56',
+    type: 'need',
+    message:
+      'Looking for a reliable supplier of fresh crayfish in bulk around Lagos.',
+    timestamp: '2025-10-17T08:43:12.000Z',
+    author_name: 'Adaobi Okafor',
+  },
+  {
+    id: 'a3c2d489-fb20-4e56-bbbd-5f4a7d3b9b0c',
+    type: 'offer',
+    message:
+      'Offering premium ground crayfish in paint, mudu, and pack sizes — fresh from Oron.',
+    timestamp: '2025-10-17T09:15:27.000Z',
+    author_name: 'Chukwuemeka Ngumoha',
+  },
+  {
+    id: 'e6a21ad1-97ac-4b1e-bf18-7038dfc8a661',
+    type: 'need',
+    message: 'Need 2 paints of crayfish delivered to Kaduna South by Friday.',
+    timestamp: '2025-10-17T09:58:40.000Z',
+    author_name: 'John Bello',
+  },
+  {
+    id: '72de8cf1-7ab5-47e1-b37d-57c3e530c97c',
+    type: 'offer',
+    message:
+      'Discount alert! Buy 5 packs of Nicadeen Crayfish and get 1 free this weekend.',
+    timestamp: '2025-10-17T10:22:09.000Z',
+    author_name: 'Nicadeen Crayfish',
+  },
+  {
+    id: 'f1a3b8cb-3e94-45cb-9823-b76b73b56b6a',
+    type: 'need',
+    message: 'Looking for someone to supply crayfish to my restaurant weekly.',
+    timestamp: '2025-10-17T11:04:55.000Z',
+    author_name: 'Esther Johnson',
+  },
+  {
+    id: 'bd17fa21-3c7e-42f4-8a57-083981fecc92',
+    type: 'offer',
+    message:
+      'We supply dried crayfish in large quantities for retailers and food vendors nationwide.',
+    timestamp: '2025-10-17T11:37:21.000Z',
+    author_name: 'Adebayo Fisheries',
+  },
+];
 
 export default function HomePage(): JSX.Element {
   return (
@@ -96,7 +159,19 @@ export default function HomePage(): JSX.Element {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="all">
-          All Content posted will appear here
+          {fakePosts.map(post => (
+            <Card key={post.id} className="my-3 rounded-sm border-gray-50">
+              <CardHeader>
+                <span>Card&apos;s header</span>
+              </CardHeader>
+              <CardContent>
+                <span>Card&apos;s content</span>
+              </CardContent>
+              <CardFooter>
+                <span>Card&apos;s footer</span>
+              </CardFooter>
+            </Card>
+          ))}
         </TabsContent>
         <TabsContent value="needs">
           All Needs posted will appear here
