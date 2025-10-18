@@ -1,18 +1,14 @@
 'use client';
 
 import { Borel } from 'next/font/google';
-import { type JSX, useState } from 'react';
+import { type JSX, useState, useEffect } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import {
-  Empty,
-  EmptyMedia,
-  EmptyHeader,
-  EmptyDescription,
-} from '@/components/ui/empty';
+import { Empty, EmptyHeader, EmptyDescription } from '@/components/ui/empty';
+import { Spinner } from '@/components/ui/spinner';
 
 import PostCard from '@/components/custom/post_card';
 
@@ -73,7 +69,25 @@ export const fakePosts: IPost[] = [
 ];
 
 export default function HomePage(): JSX.Element {
-  const [posts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const retrieveAllPosts = async () => {
+      setLoading(true);
+      const data = await (await fetch('http://localhost:8000/posts')).json();
+      setPosts(data);
+      console.log(data);
+      setLoading(false);
+    };
+
+    retrieveAllPosts();
+  }, []);
+
+  if (loading)
+    return (
+      <Spinner className="mx-auto my-[50vh] h-[100px] w-[100px] text-soft-green" />
+    );
 
   return (
     <main>
@@ -185,8 +199,9 @@ export default function HomePage(): JSX.Element {
       ) : (
         // <h1 className="text-2xl tracking-widest font-sans mx-auto">No Posts</h1>
         <Empty>
-          <EmptyMedia></EmptyMedia>
-          <EmptyHeader>No Posts Yet</EmptyHeader>
+          <EmptyHeader className="text-2xl font-sans font-semibold tracking-wider">
+            No Posts Yet
+          </EmptyHeader>
           <EmptyDescription>
             Congratulations 🎊 you&apos;re our very first user.
           </EmptyDescription>
