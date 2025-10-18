@@ -27,7 +27,7 @@ export default function PostCard({ post }: { post: IPost }): JSX.Element {
           {post.author_name}
         </h3>
       </CardHeader>
-      <CardContent className="tracking-wider leading-2 font-sans">
+      <CardContent className="tracking-wider font-sans">
         {post.message}
       </CardContent>
       <CardFooter>

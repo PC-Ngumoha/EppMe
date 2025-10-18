@@ -1,7 +1,7 @@
 'use client';
 
 import { Borel } from 'next/font/google';
-import { type JSX, useState, useEffect } from 'react';
+import { type JSX, useState, useEffect, FormEvent } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -12,8 +12,8 @@ import { Spinner } from '@/components/ui/spinner';
 
 import PostCard from '@/components/custom/post_card';
 
-import type { IPost } from '@/lib/types';
-import { retrievePosts } from '@/lib/axios';
+import type { IPost, PostType, PostPayloadType } from '@/lib/types';
+import { retrievePosts, createPost } from '@/lib/axios';
 
 const borel = Borel({
   subsets: ['latin'],
@@ -23,11 +23,14 @@ const borel = Borel({
 export default function HomePage(): JSX.Element {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fields, setFields] = useState<PostPayloadType>({
+    type: 'need',
+    author_name: '',
+    message: '',
+  });
 
   useEffect(() => {
     const retrieveAllPosts = async () => {
-      // const data = await (await fetch('http://localhost:8000/posts')).json();
-      // setPosts(data);
       const posts = await retrievePosts();
       setPosts(posts);
       setLoading(false);
@@ -35,6 +38,16 @@ export default function HomePage(): JSX.Element {
 
     retrieveAllPosts();
   }, []);
+
+  const handleSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+    const response = await createPost(fields);
+
+    if (response.status === 201) {
+      // router.reload(); // Refresh the page.
+      window.location.reload(); // Refresh the page.
+    }
+  };
 
   if (loading)
     return (
@@ -56,11 +69,20 @@ export default function HomePage(): JSX.Element {
       <form
         action=""
         className="bg-green-50 w-[40%] mx-auto my-8 p-6 text-text rounded-md"
+        onSubmit={handleSubmit}
       >
         <div className="flex justify-between items-center px-4 m-2">
           <h2 className="font-bold text-xl">What&apos;s on your mind?</h2>
 
-          <ToggleGroup type="single">
+          <ToggleGroup
+            type="single"
+            value={fields.type}
+            onValueChange={(value: PostType) => {
+              if (value) {
+                setFields({ ...fields, type: value });
+              }
+            }}
+          >
             <ToggleGroupItem
               value="need"
               className="font-bold data-[state=on]:bg-soft-green data-[state=on]:text-white
@@ -83,11 +105,19 @@ export default function HomePage(): JSX.Element {
             placeholder="Type what you need or can help with"
             className="my-2 bg-white py-3 px-2 border border-gray-300 focus:outline-none
             font-sans h-[120px] tracking-wider"
+            value={fields.message}
+            onChange={evt => {
+              setFields({ ...fields, message: evt.target.value });
+            }}
           />
           <Input
             placeholder="Your name"
             className="my-2 px-2 py-3 bg-white border border-gray-300 rounded-md font-sans
             placeholder:font-sans tracking-wider"
+            value={fields.author_name}
+            onChange={evt => {
+              setFields({ ...fields, author_name: evt.target.value });
+            }}
           />
           <Button
             type="submit"
