@@ -31,3 +31,15 @@ export async function createPost(payload: PostPayloadType): Promise<AxiosRespons
 
   return response;
 }
+
+export async function deletePost(postId: string): Promise<AxiosResponse> {
+  let response;
+
+  try {
+    response = await axios.delete(`/posts/${postId}`);
+  } catch (error) {
+    throw new AxiosError(`Oops! ${error}`);
+  }
+
+  return response;
+}
