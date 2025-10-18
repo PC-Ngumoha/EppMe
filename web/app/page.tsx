@@ -1,10 +1,18 @@
+'use client';
+
 import { Borel } from 'next/font/google';
-import { type JSX } from 'react';
+import { type JSX, useState } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import {
+  Empty,
+  EmptyMedia,
+  EmptyHeader,
+  EmptyDescription,
+} from '@/components/ui/empty';
 
 import PostCard from '@/components/custom/post_card';
 
@@ -65,6 +73,8 @@ export const fakePosts: IPost[] = [
 ];
 
 export default function HomePage(): JSX.Element {
+  const [posts] = useState<IPost[]>([]);
+
   return (
     <main>
       {/* Navbar */}
@@ -124,53 +134,64 @@ export default function HomePage(): JSX.Element {
       </form>
 
       {/* Post Feed */}
-      <Tabs defaultValue="all" className="mx-auto mt-4 w-[50%]">
-        <TabsList className="w-[30%] mx-auto bg-transparent">
-          <TabsTrigger
-            value="all"
-            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+      {posts.length > 0 ? (
+        <Tabs defaultValue="all" className="mx-auto mt-4 w-[50%]">
+          <TabsList className="w-[30%] mx-auto bg-transparent">
+            <TabsTrigger
+              value="all"
+              className="data-[state=active]:bg-soft-green data-[state=active]:text-white
             hover:bg-green-200 mx-1"
-          >
-            All
-          </TabsTrigger>
-          <TabsTrigger
-            value="needs"
-            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+            >
+              All
+            </TabsTrigger>
+            <TabsTrigger
+              value="needs"
+              className="data-[state=active]:bg-soft-green data-[state=active]:text-white
             hover:bg-green-200 mx-1"
-          >
-            Needs
-          </TabsTrigger>
-          <TabsTrigger
-            value="offers"
-            className="data-[state=active]:bg-soft-green data-[state=active]:text-white
+            >
+              Needs
+            </TabsTrigger>
+            <TabsTrigger
+              value="offers"
+              className="data-[state=active]:bg-soft-green data-[state=active]:text-white
             hover:bg-green-200 mx-1"
-          >
-            Offers
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="all">
-          {/* All posts made */}
-          {fakePosts.map(post => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </TabsContent>
-        <TabsContent value="needs">
-          {/* Needs of other users  */}
-          {fakePosts
-            .filter(post => post.type === 'need')
-            .map(post => (
+            >
+              Offers
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="all">
+            {/* All posts made */}
+            {posts.map(post => (
               <PostCard key={post.id} post={post} />
             ))}
-        </TabsContent>
-        <TabsContent value="offers">
-          {/* Offers from other users */}
-          {fakePosts
-            .filter(post => post.type === 'offer')
-            .map(post => (
-              <PostCard key={post.id} post={post} />
-            ))}
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+          <TabsContent value="needs">
+            {/* Needs of other users  */}
+            {posts
+              .filter(post => post.type === 'need')
+              .map(post => (
+                <PostCard key={post.id} post={post} />
+              ))}
+          </TabsContent>
+          <TabsContent value="offers">
+            {/* Offers from other users */}
+            {posts
+              .filter(post => post.type === 'offer')
+              .map(post => (
+                <PostCard key={post.id} post={post} />
+              ))}
+          </TabsContent>
+        </Tabs>
+      ) : (
+        // <h1 className="text-2xl tracking-widest font-sans mx-auto">No Posts</h1>
+        <Empty>
+          <EmptyMedia></EmptyMedia>
+          <EmptyHeader>No Posts Yet</EmptyHeader>
+          <EmptyDescription>
+            Congratulations 🎊 you&apos;re our very first user.
+          </EmptyDescription>
+        </Empty>
+      )}
     </main>
   );
 }

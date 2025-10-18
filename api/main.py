@@ -5,6 +5,7 @@ main entry point.
 from typing import Annotated
 from datetime import datetime
 from fastapi import FastAPI, Depends, Query, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Field, Session, create_engine, select, SQLModel
 from uuid import uuid4, UUID
 
@@ -61,6 +62,23 @@ app = FastAPI()
 @app.on_event('startup')
 def on_startup():
     create_database_and_tables()
+
+
+# Configure CORS. So Next.js frontend can communicate with API.
+origins = [
+    'http://localhost:3000',
+    'https://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://127.0.0.1:3000',
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 
 
 @app.get('/posts/')
